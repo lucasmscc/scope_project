@@ -54,34 +54,71 @@ Para manter a ergonomia da linguagem, foi implementada uma regra de **coerção/
 
 ### 3.1 Definição, Extração e Promoção de Tipos
 
+// Construtor do número complexo
+fun complex(r: real, i: real) : Complex =
+    { re = r, im = i }
+
+// Promoção implícita: Converte real/inteiro para Complex
+fun toComplex(n: real) : Complex =
+    { re = n, im = 0.0 }
+
+// Funções Extratoras
+fun re(z: Complex) : real = z.re
+fun im(z: Complex) : real = z.im
+
+// Operações Aritméticas Básicas
+fun somar(z1: Complex, z2: Complex) : Complex =
+    complex(z1.re + z2.re, z1.im + z2.im)
+
+fun multiplicar(z1: Complex, z2: Complex) : Complex =
+    complex(z1.re * z2.re - z1.im * z2.im, z1.re * z2.im + z1.im * z2.re)
+
+// Conjugado e Módulo (Norma)
+fun conj(z: Complex) : Complex =
+    complex(z.re, ~ (z.im))
+
+fun abs(z: Complex) : real =
+    Math.sqrt(z.re * z.re + z.im * z.im)
+
+// Definição da estrutura de Lista encadeada
+datatype 'a list = Nil | Cons of 'a * 'a list
+
+// Função de alta ordem: Map (para transformar elementos)
+fun map f Nil = Nil
+  | map f (Cons(x, xs)) = Cons(f x, map f xs)
+
+// Função de alta ordem: Filter (para filtrar elementos)
+fun filter pred Nil = Nil
+  | filter pred (Cons(x, xs)) = 
+        if pred x then Cons(x, filter pred xs)
+        else filter pred xs
+
+// 3.2 Operações Aritméticas e Conjugado
 let
-    var z1 = complex(3, 4),
-    var k = 5
+    var z1 = complex(1.0, 2.0)
+    var z2 = complex(3.0, ~4.0)
+    var resultado3_2 = conj(multiplicar(z1, z2))
 in
-    re(z1 + k) + im(z1)
+    resultado3_2
+end;
 
-### 3.2 Operações Aritméticas e Conjugado
-
+// 3.3 Uso de Números Complexos com Filtro/Transformação em Lista
 let
-    var z1 = complex(1, 2),
-    var z2 = complex(3, -4)
+    fun norma(z: Complex) = abs(z)
+    var lista = Cons(complex(1.0, 1.0), Cons(complex(3.0, 4.0), Cons(complex(0.0, 2.0), Nil)))
+    var filtrados = filter (fn z => abs(z) > 2.0) lista
+    var resultado3_3 = map norma filtrados
 in
-    conj(z1 * z2)
+    resultado3_3
+end;
 
-### 3.3 Uso de Números Complexos em Compreensão de Listas
-
+// 3.4 Funções de Alta Ordem com Complexos
 let
-    fun norma(z) = abs(z),
-    var lista = complex(1, 1) : complex(3, 4) : complex(0, 2) : []
+    fun transformar(f, z: Complex) = f(z)
+    var resultado3_4 = transformar(fn z => somar(conj(z), complex(1.0, 1.0)), complex(2.0, 3.0))
 in
-    [norma(z) for z in lista if abs(z) > 2]
-
-### 3.4 Funções de Alta Ordem com Complexos
-
-let
-    fun transformar(f, z) = f(z)
-in
-    transformar(fn z . conj(z) + complex(1, 1), complex(2, 3))
+    resultado3_4
+end
 
 ## 4. Gramática
 
