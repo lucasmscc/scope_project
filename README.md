@@ -55,44 +55,14 @@ Para manter a ergonomia da linguagem, foi implementada uma regra de **coerção/
 ### 3.1 Definição, Extração e Promoção de Tipos
 
 ```sml
-// Construtor do número complexo
-fun complex(r: real, i: real) : Complex =
-    { re = r, im = i }
-
-// Promoção implícita: Converte real/inteiro para Complex
-fun toComplex(n: real) : Complex =
-    { re = n, im = 0.0 }
-
-// Funções Extratoras
-fun re(z: Complex) : real = z.re
-fun im(z: Complex) : real = z.im
-
-// Operações Aritméticas Básicas
-fun somar(z1: Complex, z2: Complex) : Complex =
-    complex(z1.re + z2.re, z1.im + z2.im)
-
-fun multiplicar(z1: Complex, z2: Complex) : Complex =
-    complex(z1.re * z2.re - z1.im * z2.im, z1.re * z2.im + z1.im * z2.re)
-
-// Conjugado e Módulo (Norma)
-fun conj(z: Complex) : Complex =
-    complex(z.re, ~ (z.im))
-
-fun abs(z: Complex) : real =
-    Math.sqrt(z.re * z.re + z.im * z.im)
-
-// Definição da estrutura de Lista encadeada
-datatype 'a list = Nil | Cons of 'a * 'a list
-
-// Função de alta ordem: Map (para transformar elementos)
-fun map f Nil = Nil
-  | map f (Cons(x, xs)) = Cons(f x, map f xs)
-
-// Função de alta ordem: Filter (para filtrar elementos)
-fun filter pred Nil = Nil
-  | filter pred (Cons(x, xs)) = 
-        if pred x then Cons(x, filter pred xs)
-        else filter pred xs
+// Construtor e Funções Extratoras utilizando operadores nativos
+let
+    fun somar z1, z2 = complex(re(z1) + re(z2), im(z1) + im(z2)),
+    fun multiplicar z1, z2 = complex(re(z1) * re(z2) - im(z1) * im(z2), re(z1) * im(z2) + im(z1) * re(z2)),
+    fun norma z = abs(z)
+in
+    somar(complex(1, 2), 3) // Exemplo de promoção implícita: 3 -> complex(3, 0)
+end;
 ```
 
 ### 3.2 Operações Aritméticas e Conjugado
@@ -133,6 +103,7 @@ end
 
 ## 4. Gramática
 
+```ebnf
 Programa ::= Expressao
 
 Expressao ::= Valor
@@ -210,3 +181,5 @@ Aplicacao ::= Expressao "(" ListExp ")"
 
 ListExp ::= Expressao
         | Expressao "," ListExp
+
+```
