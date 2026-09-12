@@ -54,6 +54,7 @@ Para manter a ergonomia da linguagem, foi implementada uma regra de **coerção/
 
 ### 3.1 Definição, Extração e Promoção de Tipos
 
+```sml
 // Construtor do número complexo
 fun complex(r: real, i: real) : Complex =
     { re = r, im = i }
@@ -92,8 +93,11 @@ fun filter pred Nil = Nil
   | filter pred (Cons(x, xs)) = 
         if pred x then Cons(x, filter pred xs)
         else filter pred xs
+```
 
-// 3.2 Operações Aritméticas e Conjugado
+### 3.2 Operações Aritméticas e Conjugado
+
+```sml
 let
     var z1 = complex(1.0, 2.0)
     var z2 = complex(3.0, ~4.0)
@@ -101,8 +105,11 @@ let
 in
     resultado3_2
 end;
+```
 
-// 3.3 Uso de Números Complexos com Filtro/Transformação em Lista
+### 3.3 Uso de Números Complexos com Filtro/Transformação em Lista
+
+```sml
 let
     fun norma(z: Complex) = abs(z)
     var lista = Cons(complex(1.0, 1.0), Cons(complex(3.0, 4.0), Cons(complex(0.0, 2.0), Nil)))
@@ -111,14 +118,18 @@ let
 in
     resultado3_3
 end;
+```
 
-// 3.4 Funções de Alta Ordem com Complexos
+### 3.4 Funções de Alta Ordem com Complexos
+
+```sml
 let
     fun transformar(f, z: Complex) = f(z)
     var resultado3_4 = transformar(fn z => somar(conj(z), complex(1.0, 1.0)), complex(2.0, 3.0))
 in
     resultado3_4
 end
+```
 
 ## 4. Gramática
 
