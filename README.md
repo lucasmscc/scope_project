@@ -58,13 +58,12 @@ Os quatro operadores binários fundamentais (`+`, `-`, `*`, `/`) aplicados a nú
 
 Para manter a ergonomia da linguagem, foi implementada uma regra de **coerção/promoção estática de tipos**:
 
-| Operando Esquerdo | Operando Direito | Tipo Resultante | Ação de Promoção           |
-| :---------------- | :--------------- | :-------------- | :----------------------------- |
-| `INTEIRO`       | `INTEIRO`      | `INTEIRO`     | Nenhuma (operação nativa)    |
-| `COMPLEXO`      | `COMPLEXO`     | `COMPLEXO`    | Nenhuma                        |
-| `INTEIRO`       | `COMPLEXO`     | `COMPLEXO`    | Promove$a \to complex(a, 0)$ |
-| `COMPLEXO`      | `INTEIRO`      | `COMPLEXO`    | Promove$a \to complex(a, 0)$ |
-
+| Operando Esquerdo | Operando Direito | Tipo Resultante | Ação de Promoção        |
+| :---------------- | :--------------- | :-------------- | :-------------------------- |
+| `INTEIRO`       | `INTEIRO`      | `INTEIRO`     | Nenhuma (operação nativa) |
+| `COMPLEXO`      | `COMPLEXO`     | `COMPLEXO`    | Nenhuma                     |
+| `INTEIRO`       | `COMPLEXO`     | `COMPLEXO`    | $a \to complex(a, 0)$     |
+| `COMPLEXO`      | `INTEIRO`      | `COMPLEXO`    | $a \to complex(a, 0)$     |
 
 ## 3. Exemplos de Código
 
@@ -127,9 +126,6 @@ end;
 ```
 
 ## 4. Gramática
-
-
-
 
 ```ebnf
 Programa ::= Expressao
