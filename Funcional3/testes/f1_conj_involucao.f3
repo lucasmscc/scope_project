@@ -1,0 +1,2 @@
+// esperado: complex(1, 2)
+conj(conj(complex(1, 2)))

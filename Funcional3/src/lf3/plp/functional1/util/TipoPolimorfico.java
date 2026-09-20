@@ -94,6 +94,13 @@ public class TipoPolimorfico implements Tipo {
 		return this.eIgual(TipoPrimitivo.STRING);
 	}
 
+	/**
+	 * Indica se este tipo e complexo (infere COMPLEXO se ainda nao inferido).
+	 */
+	public boolean eComplexo() {
+		return this.eIgual(TipoPrimitivo.COMPLEXO);
+	}
+
 	public boolean eIgual(Tipo tipo) {
 		boolean ret = false;
 

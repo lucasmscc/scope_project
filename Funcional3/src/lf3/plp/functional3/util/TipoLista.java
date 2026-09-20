@@ -57,6 +57,10 @@ public class TipoLista implements Tipo {
 		return false;
 	}
 
+	public boolean eComplexo() {
+		return false;
+	}
+
 	public boolean eValido() {
 		return subTipo.eValido();
 	}

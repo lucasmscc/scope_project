@@ -1,0 +1,2 @@
+// esperado: 4
+let fun parteReal z = re(conj(z)) in parteReal(complex(4, 6))

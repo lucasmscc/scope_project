@@ -86,6 +86,10 @@ public class TipoFuncao implements Tipo {
 		return imagem.eString();
 	}
 
+	public boolean eComplexo() {
+		return imagem.eComplexo();
+	}
+
 	public boolean eValido() {
 		boolean ret = dominio != null;
 		for (Tipo t : this.dominio) {

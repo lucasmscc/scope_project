@@ -37,6 +37,14 @@ public interface Tipo {
 	public abstract boolean eString();
 
 	/**
+	 * Indica se esta expressao &eacute; um numero complexo.
+	 * 
+	 * @return <code>true</code> se esta expressao for complexa;
+	 *         <code>false</code> caso contrario.
+	 */
+	public abstract boolean eComplexo();
+
+	/**
 	 * Compara este tipo com o tipo dado.
 	 * Dois tipos s�o iguais se eles t�m o mesmo nome.
 	 * 

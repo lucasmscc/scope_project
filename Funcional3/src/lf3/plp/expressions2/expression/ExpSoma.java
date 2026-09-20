@@ -27,9 +27,14 @@ public class ExpSoma extends ExpBinaria {
 	 * Retorna o valor da Expressao de Soma
 	 */
 	public Valor avaliar(AmbienteExecucao amb) throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
+		Valor esqAvaliado = getEsq().avaliar(amb);
+		Valor dirAvaliado = getDir().avaliar(amb);
+		if (esqAvaliado instanceof ValorComplexo || dirAvaliado instanceof ValorComplexo) {
+			return ValorComplexo.soma(ValorComplexo.promover(esqAvaliado), ValorComplexo.promover(dirAvaliado), amb);
+		}
 		return new ValorInteiro(
-			((ValorInteiro) getEsq().avaliar(amb)).valor() +
-			((ValorInteiro) getDir().avaliar(amb)).valor() );
+			((ValorInteiro) esqAvaliado).valor() +
+			((ValorInteiro) dirAvaliado).valor() );
 	}
 	
 	/**
@@ -45,7 +50,9 @@ public class ExpSoma extends ExpBinaria {
 	 */
 	protected boolean checaTipoElementoTerminal(AmbienteCompilacao ambiente)
 			throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
-		return (getEsq().getTipo(ambiente).eInteiro() && getDir().getTipo(ambiente).eInteiro());
+		Tipo tipoEsq = getEsq().getTipo(ambiente);
+		Tipo tipoDir = getDir().getTipo(ambiente);
+		return ((tipoEsq.eInteiro() || tipoEsq.eComplexo()) && (tipoDir.eInteiro() || tipoDir.eComplexo()));
 	}
 
 	/**
@@ -55,6 +62,9 @@ public class ExpSoma extends ExpBinaria {
 	 * @return os tipos possiveis desta expressao.
 	 */
 	public Tipo getTipo(AmbienteCompilacao ambiente) {
+		if (getEsq().getTipo(ambiente).eComplexo() || getDir().getTipo(ambiente).eComplexo()) {
+			return TipoPrimitivo.COMPLEXO;
+		}
 		return TipoPrimitivo.INTEIRO;
 	}
 	

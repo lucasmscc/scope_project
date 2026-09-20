@@ -1,0 +1,2 @@
+// esperado: complex(0, -3)
+conj(complex(0, 3))

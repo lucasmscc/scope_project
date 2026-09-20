@@ -11,7 +11,8 @@ public enum TipoPrimitivo implements Tipo {
 
 	INTEIRO("INTEIRO"),
 	BOOLEANO("BOOLEANO"),
-	STRING("STRING");
+	STRING("STRING"),
+	COMPLEXO("COMPLEXO");
 
 	protected String nome;
 
@@ -48,6 +49,13 @@ public enum TipoPrimitivo implements Tipo {
 	 */
 	public boolean eString() {
 		return this.eIgual(STRING);
+	}
+
+	/**
+	 * Indica se este tipo e complexo.
+	 */
+	public boolean eComplexo() {
+		return this.eIgual(COMPLEXO);
 	}
 
 	/* (non-Javadoc)
