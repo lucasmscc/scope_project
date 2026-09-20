@@ -1,0 +1,2 @@
+// esperado: 1
+abs(complex(1, 1))

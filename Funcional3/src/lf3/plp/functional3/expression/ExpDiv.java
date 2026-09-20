@@ -12,48 +12,45 @@ import lf3.plp.expressions2.memory.AmbienteExecucao;
 import lf3.plp.expressions2.memory.VariavelJaDeclaradaException;
 import lf3.plp.expressions2.memory.VariavelNaoDeclaradaException;
 
-public class ExpMult extends ExpBinaria {
+/**
+ * Um objeto desta classe representa uma Expressao de Divisao.
+ * Inteiro/inteiro usa a divisao inteira do Java (trunca em direcao a zero);
+ * se algum lado for complexo, o outro e promovido e a divisao e feita por
+ * <code>ValorComplexo.div</code>. Divisor zero lanca
+ * <code>ArithmeticException</code> na execucao.
+ */
+public class ExpDiv extends ExpBinaria {
 
 	/**
-	 * Controi uma Expressao de Multiplica��o com as sub-expressoes
-	 * especificadas. Assume-se que estas sub-expressoes resultam em
-	 * <code>ValorInteiro</code> quando avaliadas.
-	 * 
-	 * @param esq
-	 *            Expressao da esquerda
-	 * @param dir
-	 *            Expressao da direita
+	 * Controi uma Expressao de Divisao com as sub-expressoes especificadas.
+	 *
+	 * @param esq Expressao da esquerda (dividendo)
+	 * @param dir Expressao da direita (divisor)
 	 */
-	public ExpMult(Expressao esq, Expressao dir) {
-		super(esq, dir, "*");
+	public ExpDiv(Expressao esq, Expressao dir) {
+		super(esq, dir, "/");
 	}
 
 	/**
-	 * Retorna o valor da Expressao de Multiplica��o
+	 * Retorna o valor da Expressao de Divisao.
 	 */
 	public Valor avaliar(AmbienteExecucao amb)
 			throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
 		Valor esqAvaliado = getEsq().avaliar(amb);
 		Valor dirAvaliado = getDir().avaliar(amb);
 		if (esqAvaliado instanceof ValorComplexo || dirAvaliado instanceof ValorComplexo) {
-			return ValorComplexo.mult(ValorComplexo.promover(esqAvaliado), ValorComplexo.promover(dirAvaliado));
+			return ValorComplexo.div(ValorComplexo.promover(esqAvaliado), ValorComplexo.promover(dirAvaliado));
 		}
-		return new ValorInteiro(((ValorInteiro) esqAvaliado).valor()
-				* ((ValorInteiro) dirAvaliado).valor());
+		int divisor = ((ValorInteiro) dirAvaliado).valor();
+		if (divisor == 0) {
+			throw new ArithmeticException("divisao por zero");
+		}
+		return new ValorInteiro(((ValorInteiro) esqAvaliado).valor() / divisor);
 	}
 
 	/**
-	 * Realiza a verificacao de tipos desta expressao.
-	 * 
-	 * @param ambiente
-	 *            o ambiente de compila��o.
-	 * @return <code>true</code> se os tipos da expressao sao validos;
-	 *         <code>false</code> caso contrario.
-	 * @exception VariavelNaoDeclaradaException
-	 *                se existir um identificador nao declarado no ambiente.
-	 * @exception VariavelNaoDeclaradaException
-	 *                se existir um identificador declarado mais de uma vez no
-	 *                mesmo bloco do ambiente.
+	 * Realiza a verificacao de tipos desta expressao: os dois lados devem ser
+	 * inteiros ou complexos.
 	 */
 	@Override
 	protected boolean checaTipoElementoTerminal(AmbienteCompilacao ambiente)
@@ -64,11 +61,8 @@ public class ExpMult extends ExpBinaria {
 	}
 
 	/**
-	 * Retorna os tipos possiveis desta expressao.
-	 * 
-	 * @param ambiente
-	 *            o ambiente de compila��o.
-	 * @return os tipos possiveis desta expressao.
+	 * Retorna o tipo desta expressao: complexo se algum lado for complexo;
+	 * inteiro caso contrario.
 	 */
 	public Tipo getTipo(AmbienteCompilacao ambiente) {
 		if (getEsq().getTipo(ambiente).eComplexo() || getDir().getTipo(ambiente).eComplexo()) {
@@ -76,8 +70,8 @@ public class ExpMult extends ExpBinaria {
 		}
 		return TipoPrimitivo.INTEIRO;
 	}
-	
-	public ExpMult clone() {
-		return new ExpMult(this.esq.clone(), this.dir.clone());
+
+	public ExpDiv clone() {
+		return new ExpDiv(this.esq.clone(), this.dir.clone());
 	}
 }
