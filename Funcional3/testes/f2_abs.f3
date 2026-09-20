@@ -1,0 +1,2 @@
+// esperado: 5
+abs(complex(3, 4))

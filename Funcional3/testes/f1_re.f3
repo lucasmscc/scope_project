@@ -1,0 +1,2 @@
+// esperado: 5
+re(complex(5, 7))
